@@ -1,0 +1,29 @@
+from PIL import Image
+from time import gmtime, strftime
+from os.path import expanduser
+import os
+from os import listdir
+from os.path import isfile, join
+
+
+if __name__ == "__main__":
+    home = expanduser("~")
+    path = home + "/GJ/img/" + (strftime("%Y_%m_%d", gmtime()))
+    pdf1_filename = path+"/pdf.pdf"
+
+    onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+    i=0
+    imgs=[]
+    for f in onlyfiles:
+        print(f)
+        filename, file_extension = os.path.splitext(f)
+        print(path + "/" + filename + file_extension)
+        img = Image.open(path + "/" + f)
+        if i > 0:
+            imgs.append(img)
+        else:
+            img0=img
+        i = i+1
+    for img in imgs:
+        print img
+    img0.save(pdf1_filename, "PDF", resolution=100.0, save_all=True, append_images=imgs)
